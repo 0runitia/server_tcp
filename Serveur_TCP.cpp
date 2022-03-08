@@ -16,39 +16,28 @@ int main()
 
 
 	// Cr�ation du canal internet de communication avec les clients
-
+Obj_TCP_Serveur.SocketCreation();
 
 
 	// Le socket est cr��, nous pouvons mettre en place le processus de communication
 	cout<<"Serveur : Le Socket est cree !!!"<<endl;
+Obj_TCP_Serveur.SocketConnexion();
 
-
-
-	// Cr�ation de l'adresse physique de la liaison de communication
-	// Le serveur est physiquement en place.
-        // A compl�ter ...
-
-
-
-	// Mise en �coute du serveur
-        // A compl�ter ...
+Obj_TCP_Serveur.SocketEcoute();
 
 	cout<<"Serveur : le serveur est en ecoute, il attend la connexion d'un client .... "<<endl;
 
 
-
-        // Attente d'une demande de connexion du client
-	// A compl�ter ...
+Obj_TCP_Serveur.ClientAcceptation();
 
 	cout<<"Serveur : Le serveur a accepte la demande de connexion du client."<<endl;
 
 	cout<<"Serveur : Attente de reception d'un message"<<endl;
 
 
-
+Obj_TCP_Serveur.MessageReception();
 	// R�ception du message provenant du client
 	// A compl�ter ...
-
 
 
 	// Envoi de l'accus� de r�ception au client

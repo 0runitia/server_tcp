@@ -150,10 +150,10 @@ int TCPServeur::ClientAcceptation()
         /*********************************************************
 	*  R�ponse � la question C-5                             *
 	*********************************************************/
-	accept = SOCKET_ERROR;
-	accept = accept(TCP_Socket,NULL,NULL);
+	int accepter = SOCKET_ERROR;
+	accepter = accept(TCP_Socket, NULL,0);
 
-	if (accept == SOCKET_ERROR) // Remplacer les ?
+	if (accepter == SOCKET_ERROR)
 	{
 	     cout<<"Serveur : La connexion du Client n'est pas acceptee "<<endl;
 	     cout<<WSAGetLastError()<<endl;
@@ -178,16 +178,16 @@ int TCPServeur::MessageReception()
 	WSABUF receptionMessage;
 	DWORD NbOctetsMessage, flag = 0;
 	char  MessageBuffer[T_bloc];
-
+	receptionMessage.len = T_bloc;
+	receptionMessage.buf = MessageBuffer;
 	/*********************************************************
 	*  R�ponse � la question C-6                             *
 	*********************************************************/
 
+Reponse = WSARecv(TCP_Socket, &receptionMessage, 1, &NbOctetsMessage, &flag, NULL,NULL);
 
-	// R�ception du message du client
-	// Appeler la bonne fonction
 
-	/*if (?????????????????????) // Remplacer les ?
+	if (Reponse == SOCKET_ERROR)
 	  {
 	         cout<<"Serveur : Le client vient de se deconnecter "<< endl;
 		 closesocket(TCP_Client);
@@ -196,17 +196,15 @@ int TCPServeur::MessageReception()
 	  }
 	  else
 	  {
+			cout<<"Le message est : "<<receptionMessage.buf<<endl;
 
-	         // Affichage du message re�u
 		 cout<<endl;
 
 
 		 // Compl�tez l'affichage du message re�u
 
-		 return 0;
+		 return 1;
 	  }
-	*/
-	return -1;   // A supprimer apr�s avoir r�pondu � C-6
 }
 
 
