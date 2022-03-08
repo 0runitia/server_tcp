@@ -150,10 +150,10 @@ int TCPServeur::ClientAcceptation()
         /*********************************************************
 	*  R�ponse � la question C-5                             *
 	*********************************************************/
-	int accepter = SOCKET_ERROR;
-	accepter = accept(TCP_Socket, NULL,0);
+	TCP_Client = SOCKET_ERROR;
+	TCP_Client = accept(TCP_Socket, NULL,0);
 
-	if (accepter == SOCKET_ERROR)
+	if (TCP_Client == SOCKET_ERROR)
 	{
 	     cout<<"Serveur : La connexion du Client n'est pas acceptee "<<endl;
 	     cout<<WSAGetLastError()<<endl;
@@ -184,7 +184,7 @@ int TCPServeur::MessageReception()
 	*  R�ponse � la question C-6                             *
 	*********************************************************/
 
-Reponse = WSARecv(TCP_Socket, &receptionMessage, 1, &NbOctetsMessage, &flag, NULL,NULL);
+Reponse = WSARecv(TCP_Client, &receptionMessage, 1, &NbOctetsMessage, &flag, NULL,NULL);
 
 
 	if (Reponse == SOCKET_ERROR)
@@ -196,17 +196,15 @@ Reponse = WSARecv(TCP_Socket, &receptionMessage, 1, &NbOctetsMessage, &flag, NUL
 	  }
 	  else
 	  {
-			cout<<"Le message est : "<<receptionMessage.buf<<endl;
-
+			cout<<"message de "<<receptionMessage.buf<<" ,ca taille est de "<<NbOctetsMessage<<"octet"<<endl;
 		 cout<<endl;
 
 
 		 // Compl�tez l'affichage du message re�u
 
-		 return 1;
+		 return 0;
 	  }
 }
-
 
 
 int TCPServeur::Envoi_AccuseReception()
@@ -214,20 +212,19 @@ int TCPServeur::Envoi_AccuseReception()
 	int Reponse;
 	DWORD NbOctetsMessage;
 	WSABUF AccuseReception;
-	char ContenuMessage[1024] = "Serveur : J'ai bien recu votre message\0";
+	char ContenuMessage[T_bloc] = "Serveur : J'ai bien recu votre message\0";
 
-	//Message de l'accus� de reception du serveur
+AccuseReception.len = T_bloc;
+AccuseReception.buf = ContenuMessage;
 
-	/*********************************************************
-	*  R�ponse � la question C-7                             *
-	*********************************************************/
+Reponse = WSASend(TCP_Client,&AccuseReception, 1, &NbOctetsMessage,0, NULL, NULL);
 
 
-	/*if (?????????????) / Remplacer les ?
+	if (Reponse == SOCKET_ERROR)
 	{
 		cout<<"Serveur : L'accuse de reception n'a pas pu etre envoye au serveur client pour la raison suivante : "<<endl;
 		cout<<WSAGetLastError()<<endl;
-		closesocket(SocketTCP);
+		closesocket(TCP_Socket);
 		WSACleanup();
 		return 1;
 	}
@@ -235,8 +232,8 @@ int TCPServeur::Envoi_AccuseReception()
 	{
 		cout<<"Serveur : L'accuse de reception a ete envoye au client."<<endl;
 		return 0;
-	}*/
-	return -1;   // A supprimer apr�s avoir r�pondu � C-7
+	}
+ // A supprimer apr�s avoir r�pondu � C-7
 
 }
 
@@ -244,8 +241,7 @@ int TCPServeur::Envoi_AccuseReception()
 
 void TCPServeur::Fin_Connexion()
 {
-	/*********************************************************
-	*  R�ponse � la question C-8                             *
-	*********************************************************/
+	closesocket(TCP_Socket);
+	WSACleanup();
 	cout<<"Serveur : La session de connexion est terminee."<<endl;
 }

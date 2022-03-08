@@ -34,15 +34,15 @@ Obj_TCP_Serveur.ClientAcceptation();
 
 	cout<<"Serveur : Attente de reception d'un message"<<endl;
 
-
+do{
 Obj_TCP_Serveur.MessageReception();
-	// R�ception du message provenant du client
-	// A compl�ter ...
+}
+while(Obj_TCP_Serveur.Envoi_AccuseReception()==0);
 
 
-	// Envoi de l'accus� de r�ception au client
-        // A compl�ter ...
 
+
+Obj_TCP_Serveur.Fin_Connexion();
 
 	// D�connexion
 	// A compl�ter ...
