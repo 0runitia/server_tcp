@@ -1,9 +1,9 @@
-// Bibliotheque.h : fichier Include pour les fichiers Include système standard,
-// ou les fichiers Include spécifiques aux projets qui sont utilisés fréquemment,
-// et sont rarement modifiés ...
+// Bibliotheque.hï¿½: fichier Include pour les fichiers Include systï¿½me standard,
+// ou les fichiers Include spï¿½cifiques aux projets qui sont utilisï¿½s frï¿½quemment,
+// et sont rarement modifiï¿½s ...
 
 
-// Liaison avec la bibliothèque Ws2_32.lib
+// Liaison avec la bibliothï¿½que Ws2_32.lib
 
 #pragma comment(lib,"ws2_32.lib")
 
@@ -17,6 +17,3 @@
 #include <process.h>
 #include <string.h>
 #include <windows.h>
-
-
-

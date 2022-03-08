@@ -6,61 +6,60 @@ using namespace std;
 
 int main()
 {
-	 
-	TCPServeur Obj_TCP_Serveur;
-    
 
-        // Vérification de la version
+	TCPServeur Obj_TCP_Serveur;
+
+
+        // Vï¿½rification de la version
 	if (Obj_TCP_Serveur.NumVersion()!=0)
 		return 0;
 
 
-	// Création du canal internet de communication avec les clients 
-        // A compléter ...
-
-
-	// Le socket est créé, nous pouvons mettre en place le processus de communication
-	cout<<"Serveur : Le Socket est cree !!!"<<endl;	
+	// Crï¿½ation du canal internet de communication avec les clients
 
 
 
-	// Création de l'adresse physique de la liaison de communication
+	// Le socket est crï¿½ï¿½, nous pouvons mettre en place le processus de communication
+	cout<<"Serveur : Le Socket est cree !!!"<<endl;
+
+
+
+	// Crï¿½ation de l'adresse physique de la liaison de communication
 	// Le serveur est physiquement en place.
-        // A compléter ...
+        // A complï¿½ter ...
 
 
 
-	// Mise en écoute du serveur        
-        // A compléter ...
+	// Mise en ï¿½coute du serveur
+        // A complï¿½ter ...
 
 	cout<<"Serveur : le serveur est en ecoute, il attend la connexion d'un client .... "<<endl;
-	
+
 
 
         // Attente d'une demande de connexion du client
-	// A compléter ...
+	// A complï¿½ter ...
 
 	cout<<"Serveur : Le serveur a accepte la demande de connexion du client."<<endl;
-	
+
 	cout<<"Serveur : Attente de reception d'un message"<<endl;
 
 
 
-	// Réception du message provenant du client
-	// A compléter ...
+	// Rï¿½ception du message provenant du client
+	// A complï¿½ter ...
 
 
 
-	// Envoi de l'accusé de réception au client
-        // A compléter ...
+	// Envoi de l'accusï¿½ de rï¿½ception au client
+        // A complï¿½ter ...
 
 
-	// Déconnexion
-	// A compléter ...
+	// Dï¿½connexion
+	// A complï¿½ter ...
 
 
 	system("PAUSE");
 
 	return 0;
 }
-

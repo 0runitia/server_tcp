@@ -10,11 +10,11 @@ TCPServeur::TCPServeur()
 	erreur_version = 2;
 
 	/*********************************************************
-	***         Réponse à la question C-1                             *
+	***         Rï¿½ponse ï¿½ la question C-1                             *
 	*********************************************************/
-	
-	Erreur = -1;	// a supprimer une fois la bonne fonction choisie
-	if (Erreur!=0) 
+
+	Erreur = WSAStartup(Version_Requise, &VersionInfos);
+	if (Erreur!=0)
 	  {
 		cout<<"Serveur : La version 2.2 de winsocket n'est pas installee sur cette machine"<<endl;
 		erreur_version = 1;
@@ -23,8 +23,8 @@ TCPServeur::TCPServeur()
 	  }
 	else
 	  {
-		cout<<"Serveur : Winsock.dll est trouve !!"<<endl;	
-		cout<<"Serveur : L'etat du Serveur TCP/IP est : "; // A compléter de façon à répondre totalement à C-1
+		cout<<"Serveur : Winsock.dll est trouve !!"<<endl;
+		cout<<"Serveur : L'etat du Serveur TCP/IP est : "<<VersionInfos.szSystemStatus<<endl;
                 cout<<endl;
 		erreur_version = 0;
        	  }
@@ -42,9 +42,9 @@ TCPServeur::~TCPServeur()
 int TCPServeur::NumVersion()
 {
         /*********************************************************
-        *  Réponse à la question C-1                             *
+        *  Rï¿½ponse ï¿½ la question C-1                             *
         *********************************************************/
-        return -1;   // A supprimer après avoir répondu à C-1
+        return erreur_version;   // A supprimer aprï¿½s avoir rï¿½pondu ï¿½ C-1
 }
 
 
@@ -52,22 +52,22 @@ int TCPServeur::NumVersion()
 int TCPServeur::SocketCreation()
 {
 
-	// Initialisation des données pour créer le socket
-	
-    /*
-        TCP_Socket =  ???;
-	    Adresse =???;
-	    type_communication = ???;
-	    protocole = ???;
-	    DwFlag = ????;
-	*/
+	// Initialisation des donnï¿½es pour crï¿½er le socket
 
+
+      TCP_Socket =  INVALID_SOCKET;
+	    Adresse =AF_INET;
+	    type_communication = SOCK_STREAM;
+	    protocole = IPPROTO_TCP;
+	    DwFlag = WSA_FLAG_OVERLAPPED;
+
+	TCP_Socket = WSASocket(Adresse, type_communication, protocole, NULL, 0, DwFlag);
         /*********************************************************
-	*  Réponse à la question C-2                             *
+	*  Rï¿½ponse ï¿½ la question C-2                             *
 	*********************************************************/
-	 
 
-	/*if (???????) // Remplacer les ? 
+
+	if (TCP_Socket == INVALID_SOCKET)
 	{
 	     cout<<"Serveur : Le Canal de Communication avec les clients n'a pas pu etre etabli pour la raison suivante : "<<endl;
 	     cout<<WSAGetLastError()<<endl;
@@ -78,31 +78,28 @@ int TCPServeur::SocketCreation()
 	{
 	     cout<<"Serveur : Le Canal de Communication avec les Clients est etabli."<<endl;
 	     return 0;
-	}*/
-	return -1;   // A supprimer après avoir répondu à C-2
- 
+	}
+
+
 }
 
 
 int TCPServeur::SocketConnexion()
 {
-	int Reponse;
+	int Reponse = SOCKET_ERROR;
 
-	// Initialisation des données pour faire cette connexion
-	/*
-        adresse.sin_family = ???;
-	    adresse.sin_addr.S_un.S_addr = ???;
-	    adresse.sin_port = ???;
-	*/
+      adresse.sin_family = AF_INET;
+	    adresse.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+	    adresse.sin_port = htons(23);
 
 	/*********************************************************
-	*  Réponse à la question C-3                             *
+	*  Rï¿½ponse ï¿½ la question C-3                             *
 	*********************************************************/
-       
-       // Création de l'adresse physique de la liaison de communication
+	Reponse = bind(TCP_Socket,(struct sockaddr*)&adresse, sizeof(adresse));
+       // Crï¿½ation de l'adresse physique de la liaison de communication
 
 
-	/*if (??????????) // Remplacer les ? 
+	if (Reponse == SOCKET_ERROR)
 	{
 	    cout<<"Serveur : La Connexion du Serveur n'a pas pu etre etablie pour la raison suivante : "<<endl;
 	    cout<<WSAGetLastError()<<endl;
@@ -114,8 +111,7 @@ int TCPServeur::SocketConnexion()
 	{
 	    cout<<"Serveur : La Connexion du Serveur est etablie."<<endl;
 	    return 0;
-	}*/
-       	return -1;   // A supprimer après avoir répondu à C-3
+	}
 
 }
 
@@ -123,16 +119,16 @@ int TCPServeur::SocketConnexion()
 
 int TCPServeur::SocketEcoute()
 {
-	int reponse;
+	int ecoute = SOCKET_ERROR;
 
-	
+
         /*********************************************************
-	*  Réponse à la question C-4                             *
+	*  Rï¿½ponse ï¿½ la question C-4                             *
 	*********************************************************/
-	
+	ecoute = listen(TCP_Socket, SOMAXCONN);
 
 
-	/*if (??????????????) // Remplacer les ? 
+	if (ecoute == SOCKET_ERROR)
 	{
 	    cout<<"Serveur : La mise en ecoute du Serveur a echoue a cause de l'erreur "<<endl;
 	    cout<<WSAGetLastError()<<endl;
@@ -144,21 +140,20 @@ int TCPServeur::SocketEcoute()
 	{
 	    cout<<"Serveur : La mise en ecoute du Serveur est etablie"<<endl;
 	    return 0;
-	}*/
-	return -1;   // A supprimer après avoir répondu à C-4
+	}
 
 }
-
 
 
 int TCPServeur::ClientAcceptation()
 {
         /*********************************************************
-	*  Réponse à la question C-5                             *
+	*  Rï¿½ponse ï¿½ la question C-5                             *
 	*********************************************************/
-		
+	accept = SOCKET_ERROR;
+	accept = accept(TCP_Socket,NULL,NULL);
 
-	/*if (????????????) // Remplacer les ? 
+	if (accept == SOCKET_ERROR) // Remplacer les ?
 	{
 	     cout<<"Serveur : La connexion du Client n'est pas acceptee "<<endl;
 	     cout<<WSAGetLastError()<<endl;
@@ -170,8 +165,8 @@ int TCPServeur::ClientAcceptation()
 	{
 	     cout<<"Serveur : La connexion du Client est acceptee."<<endl;
 	     return 0;
-	}*/
-	return -1;   // A supprimer après avoir répondu à C-5
+	}
+
 
 }
 
@@ -185,14 +180,14 @@ int TCPServeur::MessageReception()
 	char  MessageBuffer[T_bloc];
 
 	/*********************************************************
-	*  Réponse à la question C-6                             *
+	*  Rï¿½ponse ï¿½ la question C-6                             *
 	*********************************************************/
 
 
-	// Réception du message du client
+	// Rï¿½ception du message du client
 	// Appeler la bonne fonction
 
-	/*if (?????????????????????) // Remplacer les ? 
+	/*if (?????????????????????) // Remplacer les ?
 	  {
 	         cout<<"Serveur : Le client vient de se deconnecter "<< endl;
 		 closesocket(TCP_Client);
@@ -201,17 +196,17 @@ int TCPServeur::MessageReception()
 	  }
 	  else
 	  {
-	
-	         // Affichage du message reçu
+
+	         // Affichage du message reï¿½u
 		 cout<<endl;
 
-	
-		 // Complétez l'affichage du message reçu         
-		
+
+		 // Complï¿½tez l'affichage du message reï¿½u
+
 		 return 0;
 	  }
 	*/
-	return -1;   // A supprimer après avoir répondu à C-6
+	return -1;   // A supprimer aprï¿½s avoir rï¿½pondu ï¿½ C-6
 }
 
 
@@ -223,14 +218,14 @@ int TCPServeur::Envoi_AccuseReception()
 	WSABUF AccuseReception;
 	char ContenuMessage[1024] = "Serveur : J'ai bien recu votre message\0";
 
-	//Message de l'accusé de reception du serveur
+	//Message de l'accusï¿½ de reception du serveur
 
 	/*********************************************************
-	*  Réponse à la question C-7                             *
+	*  Rï¿½ponse ï¿½ la question C-7                             *
 	*********************************************************/
 
 
-	/*if (?????????????) / Remplacer les ? 
+	/*if (?????????????) / Remplacer les ?
 	{
 		cout<<"Serveur : L'accuse de reception n'a pas pu etre envoye au serveur client pour la raison suivante : "<<endl;
 		cout<<WSAGetLastError()<<endl;
@@ -243,7 +238,7 @@ int TCPServeur::Envoi_AccuseReception()
 		cout<<"Serveur : L'accuse de reception a ete envoye au client."<<endl;
 		return 0;
 	}*/
-	return -1;   // A supprimer après avoir répondu à C-7
+	return -1;   // A supprimer aprï¿½s avoir rï¿½pondu ï¿½ C-7
 
 }
 
@@ -252,8 +247,7 @@ int TCPServeur::Envoi_AccuseReception()
 void TCPServeur::Fin_Connexion()
 {
 	/*********************************************************
-	*  Réponse à la question C-8                             *
+	*  Rï¿½ponse ï¿½ la question C-8                             *
 	*********************************************************/
 	cout<<"Serveur : La session de connexion est terminee."<<endl;
 }
-
